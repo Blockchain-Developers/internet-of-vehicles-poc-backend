@@ -21,7 +21,7 @@ app.use(views(__dirname + '/views', {
 }))
 
 // logger
-app.use(async (ctx:any, next:any) => {
+app.use(async (ctx:Koa.Context, next:Koa.Next) => {
   const start:any = new Date()
   await next()
   const last:any = new Date()
