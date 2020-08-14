@@ -7,8 +7,11 @@ const router = new Router();
 router.prefix('/case')
 
 router.get('/', async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
-  let case_list= Case.getlist();
-  console.log(case_list);
+  let case_list= Case.getlist()
+  console.log(case_list)
   await ctx.render('case-management', {case_list:case_list})
+})
+router.get('/create', async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
+  await ctx.render('create-case')
 })
 export default router;
