@@ -11,67 +11,68 @@ head
 .container(style='margin-top: 30px;')
   h1.text-center Internet of Vehicles PoC
   h4.text-center(style='margin-top: -10px;') File Management
-div(style='margin-right: 50px;margin-left: 50px;margin-top: 30px;')
-  .container(style='max-height: 420px;')
-    .row
-      .col-3.col-sm-3.col-md-3.col-lg-3.col-xl-3
-        label Filters
-        .input-group
-          input.form-control(type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter (Partial) File ID')
-          .input-group-prepend
-          .input-group-append
-        button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: #efefef;') Search File
-        label(style='margin-top: 20px;') Actions
-        button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: rgb(255,255,255);padding-top: 30%;padding-bottom: 30%;')
-          | Drag File Here
-          br
-          | or
-          br
-          | Click to Upload
-      .col-9.col-sm-9.col-md-9.col-lg-9.col-xl-9(style='background-color: #fdfdfd;margin-top: 21px;')
-        .table-responsive.table-borderless(style='margin-top: 10px;')
-          table.table.table-bordered
-            tbody
-              tr
-                td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') File ID
-                td(style='padding-top: 0px;padding-bottom: 0px;')
-                  a(href='#')
-                    | 6c5fbb245a1676ea5c05ae19c57fff9da90ceba32d54d25e2d2f68c30f5f5ba6
-                    br
-                td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
-                  a.text-danger(href='#') Delete File
-        .table-responsive.table-borderless
-          table.table.table-bordered
-            tbody
-              tr
-                td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') File ID
-                td(style='padding-top: 0px;padding-bottom: 0px;')
-                  a(href='#')
-                    | 42b5b323bf36aa80defc5cb0313cf4d8a3b88ad7ee2931c894465a532cce2964
-                    br
-                td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
-                  a.text-danger(href='#') Delete File
-        .table-responsive.table-borderless
-          table.table.table-bordered
-            tbody
-              tr
-                td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') File ID
-                td(style='padding-top: 0px;padding-bottom: 0px;')
-                  a(href='#')
-                    | 0684e25eafa300d7f3760857903b62b4beb3b7b0945c70ccc08514f88c080abf
-                    br
-                td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
-                  a.text-danger(href='#') Delete File
-        .table-responsive.table-borderless
-          table.table.table-bordered
-            tbody
-              tr
-                td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') File ID
-                td(style='padding-top: 0px;padding-bottom: 0px;')
-                  a(href='#')
-                    | 7c2453e005dedf806127caa20d23885d62d061e72683aa34771ca10b746c51d8
-                    br
-                td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
-                  a.text-danger(href='#') Delete File
+body(style="font-family: 'Advent Pro', sans-serif;")
+  div(style='margin-right: 50px;margin-left: 50px;margin-top: 30px;')
+    .container(style='max-height: 420px;')
+      .row
+        .col-3.col-sm-3.col-md-3.col-lg-3.col-xl-3
+          label Filters
+          .input-group
+            input.form-control(type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter (Partial) File ID')
+            .input-group-prepend
+            .input-group-append
+          button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: #efefef;') Search File
+          label(style='margin-top: 20px;') Actions
+          button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: rgb(255,255,255);padding-top: 30%;padding-bottom: 30%;')
+            | Drag File Here
+            br
+            | or
+            br
+            | Click to Upload
+        .col-9.col-sm-9.col-md-9.col-lg-9.col-xl-9(style='background-color: #fdfdfd;margin-top: 21px;')
+          .table-responsive.table-borderless(style='margin-top: 10px;')
+            table.table.table-bordered
+              tbody
+                tr
+                  td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') File ID
+                  td(style='padding-top: 0px;padding-bottom: 0px;')
+                    a(href='#')
+                      | 6c5fbb245a1676ea5c05ae19c57fff9da90ceba32d54d25e2d2f68c30f5f5ba6
+                      br
+                  td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
+                    a.text-danger(href='#') Delete File
+          .table-responsive.table-borderless
+            table.table.table-bordered
+              tbody
+                tr
+                  td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') File ID
+                  td(style='padding-top: 0px;padding-bottom: 0px;')
+                    a(href='#')
+                      | 42b5b323bf36aa80defc5cb0313cf4d8a3b88ad7ee2931c894465a532cce2964
+                      br
+                  td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
+                    a.text-danger(href='#') Delete File
+          .table-responsive.table-borderless
+            table.table.table-bordered
+              tbody
+                tr
+                  td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') File ID
+                  td(style='padding-top: 0px;padding-bottom: 0px;')
+                    a(href='#')
+                      | 0684e25eafa300d7f3760857903b62b4beb3b7b0945c70ccc08514f88c080abf
+                      br
+                  td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
+                    a.text-danger(href='#') Delete File
+          .table-responsive.table-borderless
+            table.table.table-bordered
+              tbody
+                tr
+                  td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') File ID
+                  td(style='padding-top: 0px;padding-bottom: 0px;')
+                    a(href='#')
+                      | 7c2453e005dedf806127caa20d23885d62d061e72683aa34771ca10b746c51d8
+                      br
+                  td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
+                    a.text-danger(href='#') Delete File
 script(src='assets/js/jquery.min.js')
 script(src='assets/bootstrap/js/bootstrap.min.js')
