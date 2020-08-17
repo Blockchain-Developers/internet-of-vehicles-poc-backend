@@ -10,20 +10,21 @@ head
   h1.text-center Internet of Vehicles PoC
   h4.text-center(style='margin-top: -10px;') Case Management
 body(style="font-family: 'Advent Pro', sans-serif;")
-  div(style='margin-right: 50px;margin-left: 50px;margin-top: 30px;')
+  div(style='margin-right: 50px;margin-left: 50px;margin-top: 10px;')
     .container(style='max-height: 420px;')
       .row
         .col-3.col-sm-3.col-md-3.col-lg-3.col-xl-3
-          label Filters
-          .input-group
-            input.form-control(type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter (Partial) Case ID')
-            .input-group-prepend
-            .input-group-append
-          button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: #efefef;') Search Case
-          button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;margin-top: 20px;background-color: #ffffff;') Lorem Org
-          button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: #6633ff7b;color: #ffffff;') Ipsum Org
-          button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: #ffffff;') Dolor Org
-          button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: #efefef;') Apply Filter
+          form(action='/case' method='get')
+            label Filters
+            .input-group
+              input.form-control(name='search' type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter (Partial) Case ID or Case Name' value=searchparam)
+            button.btn.btn-light.border.rounded-0(type='submit' style='width: 100%;background-color: #efefef;margin-bottom:20px') Search Case
+          each val, index in orgList
+            if(privateFor==val)
+              a.btn.btn-light.border.rounded-0(href='/case?privateFor='+val+'&search='+searchparam style='width: 100%;background-color: #6633ff7b;color: #ffffff;') #{val}
+            else
+              a.btn.btn-light.border.rounded-0(href='/case?privateFor='+val+'&search='+searchparam style='width: 100%;background-color: #ffffff;') #{val}
+          a.btn.btn-light.border.rounded-0(href='/case?privateFor='+'&search=' style='width: 100%;background-color: #efefef;margin-top:20px') Clear Filters
           label(style='margin-top: 20px;') Actions
           .input-group
             .input-group-prepend
