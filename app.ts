@@ -28,7 +28,6 @@ app.use(async (ctx:Koa.Context, next:Koa.Next) => {
   const ms:any = last - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
-
 // routes
 app.use(index.routes())
 app.use(fileRoute.routes());

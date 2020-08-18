@@ -33,12 +33,40 @@ body(style="font-family: 'Advent Pro', sans-serif;")
               tbody
                 each val, index in file_list
                   tr
-                    td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') File ID
+                    td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;min-width:60px') File ID
                     td(style='padding-top: 0px;padding-bottom: 0px;')
                       a(href='#') #{val.id}
                         br
                     td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
-                      a.text-danger(href='#') Delete File
+                      a.text-danger(href="javascript:void(0)" style="min-width:96px;" onclick="deletebtn(\""+val.id+"\")") Delete File
 
-script(src='/assets/js/jquery.min.js')
-script(src='/assets/bootstrap/js/bootstrap.min.js')
+  script(src='/assets/js/jquery.min.js')
+  script(src='/assets/bootstrap/js/bootstrap.min.js')
+  script(src='/assets/js/filereader.js')
+  script(type='text/javascript').
+    FileReaderJS.setupDrop(document.body, {
+      readAsDefault: "DataURL",
+      on: {
+        load: async function(e, file) {
+          fetch('/file/new', {
+            body: e.target.result,
+            method: 'POST',
+          }).then(response => {
+            if(!response.ok) {
+              alert('File Upload Failed')
+            } else {
+              location.reload()
+            }
+          })
+        }
+      }
+    })
+    function deletebtn(fileid) {
+      fetch('/file/delete?fileid='+fileid).then(response => {
+        if(!response.ok) {
+          alert('File Deletion Failed')
+        } else {
+          location.reload()
+        }
+      })
+    }
