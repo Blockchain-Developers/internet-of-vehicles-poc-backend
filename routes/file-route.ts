@@ -7,14 +7,16 @@ const router = new Router();
 router.prefix("/file");
 
 router.get("/list", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
-  const caseid: string = ctx.query.caseid;
-  const file_list = File.getList(caseid);
-  console.log(caseid);
-  await ctx.render("file-management", { file_list: file_list });
+  const data = await File.getList(ctx.query);
+  await ctx.render("file-management", {
+    file_list: data.file_list,
+    caseid: data.caseid,
+    search: data.search,
+  });
 });
 
 router.post("/new", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
-  const filecontent = ctx.request.body;
+  const filecontent: string = ctx.request.body;
   File.newFile(filecontent);
   ctx.status = 200;
 });

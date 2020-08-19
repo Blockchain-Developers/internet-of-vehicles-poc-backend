@@ -8,25 +8,25 @@ head
   link(rel='stylesheet' href='/assets/css/styles.css')
 .container(style='margin-top: 30px;')
   h1.text-center Internet of Vehicles PoC
-  h4.text-center(style='margin-top: -10px;') File Management
+  h4.text-center() File Management of CaseID
+  h5.text-center(style='margin-top: -10px;') #{caseid}
 body(style="font-family: 'Advent Pro', sans-serif;")
-  div(style='margin-right: 50px;margin-left: 50px;margin-top: 30px;')
+  div(style='margin-right: 50px;margin-left: 50px;margin-top: 10px;')
     .container(style='max-height: 420px;')
       .row
         .col-3.col-sm-3.col-md-3.col-lg-3.col-xl-3
           label Filters
-          .input-group
-            input.form-control(type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter (Partial) File ID')
-            .input-group-prepend
-            .input-group-append
-          button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: #efefef;') Search File
+          form(method='get')
+            .input-group
+              input.form-control(name='search' type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter (Partial) File ID' value=search)
+              input.form-control(name='caseid' type='text' value=caseid hidden)
+              .input-group-prepend
+              .input-group-append
+            button.btn.btn-light.border.rounded-0(type='submit' style='width: 100%;background-color: #efefef;') Search File
+          a.btn.btn-light.border.rounded-0(href='/file/list?caseid='+'&search=' style='width: 100%;background-color: #efefef;margin-top:20px') Clear Filters
           label(style='margin-top: 20px;') Actions
           button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: rgb(255,255,255);padding-top: 30%;padding-bottom: 30%;')
-            | Drag File Here
-            br
-            | or
-            br
-            | Click to Upload
+            | Drag File Here to Upload
         .col-9.col-sm-9.col-md-9.col-lg-9.col-xl-9(style='background-color: #fdfdfd;margin-top: 21px;')
           .table-responsive.table-borderless(style='margin-top: 10px;')
             table.table.table-bordered

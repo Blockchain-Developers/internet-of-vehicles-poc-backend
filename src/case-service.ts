@@ -1,13 +1,16 @@
 const saltedSha256 = require("salted-sha256");
 const moment = require("moment");
+
+//define orgs
+const orgList: string[] = ["", "Org1", "Org2", "Org3"];
+//defind case interface
 interface Icase {
   id: string;
   name: string;
   privateFor: string;
 }
 
-const orgList: string[] = ["", "Org1", "Org2", "Org3"];
-
+//checklist function
 function checkList(candidate: string) {
   for (let i = 0; i < orgList.length; i++) {
     if (orgList[i] == candidate) {
@@ -17,28 +20,58 @@ function checkList(candidate: string) {
   return false;
 }
 
-function getList(privateFor: string, search: string) {
+//define getlist parameters interface
+interface IcaseGetListParams {
+  privateFor: string;
+  search: string;
+}
+//define getlist response interface
+interface IcaseGetListResponse {
+  privateFor: string;
+  search: string;
+  case_list: Icase[];
+}
+
+//getlist function
+function getList(data: IcaseGetListParams) {
+  if (!checkList(data.privateFor)) {
+    data.privateFor = "";
+  }
+  if (!data.search) {
+    data.search = "";
+  }
   let sorted_list = list.filter(function (item, index, array) {
     return (
-      (item.privateFor == privateFor || privateFor == "") &&
-      (item.id.indexOf(search) !== -1 || item.name.indexOf(search) !== -1)
+      (item.privateFor == data.privateFor || data.privateFor == "") &&
+      (item.id.indexOf(data.search) !== -1 ||
+        item.name.indexOf(data.search) !== -1)
     );
   });
 
-  return sorted_list;
+  return <IcaseGetListResponse>{
+    privateFor: data.privateFor,
+    search: data.search,
+    case_list: sorted_list,
+  };
 }
 
-interface createCaseParams {
+//define createcase parameters interface
+interface IcreateCaseParams {
   name: string;
   privateFor: string;
   description: string;
 }
-async function createCase(data: createCaseParams) {
+
+//createcase function
+async function createCase(data: IcreateCaseParams) {
+  if (!checkList(data.privateFor)) {
+    data.privateFor = "";
+  }
   const id = await saltedSha256(data.name + data.description, moment(), true);
   console.log(id);
 }
 
-export default { getList, checkList, orgList, createCase };
+export default { getList, orgList, createCase };
 
 /*************************************************************************/
 /*                               DEV                                     */
