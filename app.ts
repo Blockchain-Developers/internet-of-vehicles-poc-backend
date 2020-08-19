@@ -5,8 +5,8 @@ import json from 'koa-json';
 import bodyparser from 'koa-bodyparser';
 import logger from 'koa-logger';
 import index from './routes/index';
-import users from './routes/users';
-
+import fileRoute from './routes/file-route';
+import caseRoute from './routes/case-route';
 
 // middlewares
 app.use(bodyparser({
@@ -21,17 +21,17 @@ app.use(views(__dirname + '/views', {
 }))
 
 // logger
-app.use(async (ctx:any, next:any) => {
+app.use(async (ctx:Koa.Context, next:Koa.Next) => {
   const start:any = new Date()
   await next()
   const last:any = new Date()
   const ms:any = last - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
-
 // routes
 app.use(index.routes())
-app.use(users.routes())
+app.use(fileRoute.routes());
+app.use(caseRoute.routes());
 
 // error-handling
 app.on('error', (err:any, ctx:any) => {
