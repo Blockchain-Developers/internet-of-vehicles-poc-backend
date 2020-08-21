@@ -1,0 +1,38 @@
+{
+  "name": "Network",
+  "version": "1.1",
+  "channels": {
+    "mychannel": {
+      "orderers": [
+        "orderer"
+      ],
+      "peers": [
+        "peer"
+      ]
+    }
+  },
+  "organizations": {
+    "org1": {
+      "mspid": "org1MSP",
+      "peers": [
+        "peer.org1.example.com"
+      ]
+    }
+  },
+  "orderers": {
+    "orderer.example.com": {
+      "url": "grpc://220.135.59.14:7050",
+      "grpcOptions": {
+        "ssl-target-name-override": "orderer.example.com"
+      }
+    }
+  },
+  "peers": {
+    "peer.org1.example.com": {
+      "url": "grpc://220.135.59.14:7051",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer.org1.example.com"
+      }
+    }
+  }
+}

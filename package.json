@@ -19,6 +19,8 @@
     "@types/sha256": "^0.2.0",
     "awesome-typescript-loader": "^5.2.1",
     "debug": "^4.1.1",
+    "fabric-network": "^2.2.0",
+    "fs": "^0.0.1-security",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-convert": "^1.2.0",
