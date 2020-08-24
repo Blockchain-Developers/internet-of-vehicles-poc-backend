@@ -3,53 +3,41 @@ const moment = require("moment");
 import * as fs from "fs";
 import { Wallets, Gateway, GatewayOptions, Wallet } from "fabric-network";
 
+const mspid = 'Org1MSP'
+
+let list: Icase[];
+
 async function test() {
   const connectionProfileJson = (
     await fs.readFileSync("./config/connectionprofile.json")
   ).toString();
   const connectionProfile = JSON.parse(connectionProfileJson);
-  let pub = await fs.readFileSync("./config/Admin@org1.example.com-cert.pem");
-  let priv = Buffer.from(await fs.readFileSync("./config/priv_sk"));
-  const x509Identity = {
-    credentials: {
-      certificate: pub.toString(),
-      privateKey: priv.toString(), //need to be bytestring
-    },
-    mspId: `org1MSP`,
-    type: "X.509",
-  };
   const wallet = await Wallets.newFileSystemWallet("./config/wallets");
-  await wallet.put("admin", x509Identity);
-  //const identity = await wallet.get('admin');
-  //console.log(identity)
   const gatewayOptions: GatewayOptions = {
-    wallet,
-    identity: "admin", // Previously imported identity
+    identity: mspid,
+    wallet
   };
   const gateway = new Gateway();
   await gateway.connect(connectionProfile, gatewayOptions);
   try {
-    // Obtain the smart contract with which our application wants to interact
     const network = await gateway.getNetwork("myc");
     const contract = network.getContract(
-      "iovcases:082e3263a3888511c4186a2f4cf20c433315de3403853d809c1a45f3e37c8614"
+      "iovcases"
     );
-
-    // Submit transactions for the smart contract
-    const args: string[] = [];
-    const submitResult = await contract.submitTransaction("init", ...args);
-    return submitResult;
+    const args: string[] = ['Org1MSP'];
+    const submitResult = await contract.submitTransaction("getCases", ...args);
+    console.log(submitResult)
   } catch (error) {
     console.error(`Failed to submit transaction: ${error}`);
     process.exit(1);
   } finally {
-    // Disconnect from the gateway peer when all work for this client identity is complete
     gateway.disconnect();
   }
 }
+test()
 
 //define orgs
-const orgList: string[] = ["", "Org1", "Org2", "Org3"];
+const orgList: string[] = ["", "Org1MSP", "Org2MSP", "Org3MSP"];
 //defind case interface
 interface Icase {
   id: string;
@@ -119,5 +107,3 @@ async function createCase(data: IcreateCaseParams) {
 }
 
 export default { getList, orgList, createCase, test };
-
-let list: Icase[];

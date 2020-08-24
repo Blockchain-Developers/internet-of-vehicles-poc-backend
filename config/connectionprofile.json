@@ -12,27 +12,39 @@
     }
   },
   "organizations": {
-    "org1": {
-      "mspid": "org1MSP",
+    "Org1": {
+      "mspid": "Org1MSP",
       "peers": [
-        "peer.org1.example.com"
+        "org1"
+      ]
+    },
+    "Org2": {
+      "mspid": "Org2MSP",
+      "peers": [
+        "org2"
+      ]
+    },
+    "Org3": {
+      "mspid": "Org3MSP",
+      "peers": [
+        "org3"
       ]
     }
   },
   "orderers": {
-    "orderer.example.com": {
-      "url": "grpc://220.135.59.14:7050",
-      "grpcOptions": {
-        "ssl-target-name-override": "orderer.example.com"
-      }
+    "Orderer": {
+      "url": "grpc://orderer:7050"
     }
   },
   "peers": {
-    "peer.org1.example.com": {
-      "url": "grpc://220.135.59.14:7051",
-      "grpcOptions": {
-        "ssl-target-name-override": "peer.org1.example.com"
-      }
+    "org1": {
+      "url": "grpc://org1:7051"
+    },
+    "org2": {
+      "url": "grpc://org2:7051"
+    },
+    "org3": {
+      "url": "grpc://org3:7051"
     }
   }
 }
