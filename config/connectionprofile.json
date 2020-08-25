@@ -33,7 +33,7 @@
     }
   },
   "orderers": {
-    "Orderer": {
+    "orderer": {
       "url": "grpc://orderer:7050"
     }
   },
