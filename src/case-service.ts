@@ -3,7 +3,7 @@ const moment = require("moment");
 import * as fs from "fs";
 import { Wallets, Gateway, GatewayOptions, Wallet } from "fabric-network";
 
-const mspid = 'Org1MSP'
+const mspid = "Org1MSP";
 
 let list: Icase[];
 
@@ -15,18 +15,16 @@ async function test() {
   const wallet = await Wallets.newFileSystemWallet("./config/wallets");
   const gatewayOptions: GatewayOptions = {
     identity: mspid,
-    wallet
+    wallet,
   };
   const gateway = new Gateway();
   await gateway.connect(connectionProfile, gatewayOptions);
   try {
     const network = await gateway.getNetwork("myc");
-    const contract = network.getContract(
-      "iovcases"
-    );
-    const args: string[] = ['Org1MSP'];
+    const contract = network.getContract("iovcases");
+    const args: string[] = ["Org1MSP"];
     const submitResult = await contract.submitTransaction("getCases", ...args);
-    console.log(submitResult)
+    console.log(submitResult);
   } catch (error) {
     console.error(`Failed to submit transaction: ${error}`);
     process.exit(1);
@@ -34,7 +32,7 @@ async function test() {
     gateway.disconnect();
   }
 }
-test()
+test();
 
 //define orgs
 const orgList: string[] = ["", "Org1MSP", "Org2MSP", "Org3MSP"];
