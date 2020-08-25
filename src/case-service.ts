@@ -3,7 +3,7 @@ const moment = require("moment");
 import * as fs from "fs";
 import { Wallets, Gateway, GatewayOptions } from "fabric-network";
 
-const mspid = "Org1MSP";
+const mspid = "Org2MSP";
 
 let list: Icase[];
 
@@ -23,13 +23,9 @@ async function test() {
   const gateway = new Gateway();
   await gateway.connect(connectionProfile, gatewayOptions);
   try {
-    console.log("flag2");
     const network = await gateway.getNetwork("myc");
-    console.log("flag3");
     const contract = network.getContract("iovcases");
-    console.log("flag4");
-    const args: string[] = ["Org1MSP"];
-    console.log("flag5");
+    const args: string[] = ["Org2MSP"];
     const submitResult = await contract.submitTransaction("getCases", ...args);
     console.log(submitResult);
   } catch (error) {
