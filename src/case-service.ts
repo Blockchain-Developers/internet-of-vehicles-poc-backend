@@ -1,8 +1,43 @@
 const saltedSha256 = require("salted-sha256");
 const moment = require("moment");
+import * as fs from "fs";
+import { Wallets, Gateway, GatewayOptions, Wallet } from "fabric-network";
+
+const mspid = 'Org1MSP'
+
+let list: Icase[];
+
+async function test() {
+  const connectionProfileJson = (
+    await fs.readFileSync("./config/connectionprofile.json")
+  ).toString();
+  const connectionProfile = JSON.parse(connectionProfileJson);
+  const wallet = await Wallets.newFileSystemWallet("./config/wallets");
+  const gatewayOptions: GatewayOptions = {
+    identity: mspid,
+    wallet
+  };
+  const gateway = new Gateway();
+  await gateway.connect(connectionProfile, gatewayOptions);
+  try {
+    const network = await gateway.getNetwork("myc");
+    const contract = network.getContract(
+      "iovcases"
+    );
+    const args: string[] = ['Org1MSP'];
+    const submitResult = await contract.submitTransaction("getCases", ...args);
+    console.log(submitResult)
+  } catch (error) {
+    console.error(`Failed to submit transaction: ${error}`);
+    process.exit(1);
+  } finally {
+    gateway.disconnect();
+  }
+}
+test()
 
 //define orgs
-const orgList: string[] = ["", "Org1", "Org2", "Org3"];
+const orgList: string[] = ["", "Org1MSP", "Org2MSP", "Org3MSP"];
 //defind case interface
 interface Icase {
   id: string;
@@ -71,43 +106,4 @@ async function createCase(data: IcreateCaseParams) {
   console.log(id);
 }
 
-export default { getList, orgList, createCase };
-
-/*************************************************************************/
-/*                               DEV                                     */
-/*************************************************************************/
-let list: Icase[] = [
-  {
-    id: "6c5fbb245a1676ea5c05ae19c57fff9da90ceba32d54d25e2d2f68c30f5f5ba6",
-    name: "Insurance No. 1109068880",
-    privateFor: "Org1",
-  },
-  {
-    id: "42b5b323bf36aa80defc5cb0313cf4d8a3b88ad7ee2931c894465a532cce2964",
-    name: "Insurance No. 8569266466",
-    privateFor: "Org1",
-  },
-  {
-    id: "0684e25eafa300d7f3760857903b62b4beb3b7b0945c70ccc08514f88c080abf",
-    name: "Accident  No. ABC1109068880",
-    privateFor: "Org2",
-  },
-  {
-    id: "def6352acf1543eb44d12487cbbcdcb6476dd2061a5689baa140102a23b5582c",
-    name: "Insurance No. 9189253693",
-    privateFor: "Org2",
-  },
-  {
-    id: "7c2453e005dedf806127caa20d23885d62d061e72683aa34771ca10b746c51d8",
-    name: "Insurance No. 8008328101",
-    privateFor: "Org3",
-  },
-  {
-    id: "1b5fc0c1c95a0b76bc2ed80d6ecc79ff68d468caf885044ed40c7165dda6ed4f",
-    name: "Vehicle Insurance Payment 00001",
-    privateFor: "Org3",
-  },
-];
-/*************************************************************************/
-/*************************************************************************/
-/*************************************************************************/
+export default { getList, orgList, createCase, test };

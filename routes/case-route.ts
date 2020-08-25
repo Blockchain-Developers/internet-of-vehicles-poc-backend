@@ -6,6 +6,11 @@ const router = new Router();
 
 router.prefix("/case");
 
+router.get("/test", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
+  ctx.body = await Case.test();
+  next();
+})
+
 router.use("/",async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   //console.log("test");
   await next()
