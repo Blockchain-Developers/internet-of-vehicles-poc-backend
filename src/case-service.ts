@@ -13,11 +13,11 @@ async function test() {
   ).toString();
   const connectionProfile = JSON.parse(connectionProfileJson);
   const wallet = await Wallets.newFileSystemWallet("./config/wallets");
-  await wallet.get(mspid);
+  const identity = await wallet.get(mspid);
+  console.log(identity)
   const gatewayOptions: GatewayOptions = {
     identity: mspid,
-    wallet,
-    discovery: { enabled: true, asLocalhost: true }
+    wallet
   };
   const gateway = new Gateway();
   await gateway.connect(connectionProfile, gatewayOptions);
