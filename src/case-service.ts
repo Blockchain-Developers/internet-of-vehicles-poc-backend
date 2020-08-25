@@ -1,9 +1,9 @@
 const saltedSha256 = require("salted-sha256");
 const moment = require("moment");
 import * as fs from "fs";
-import { Wallets, Gateway, GatewayOptions, Wallet } from "fabric-network";
+import { Wallets, Gateway, GatewayOptions } from "fabric-network";
 
-const mspid = "Org2MSP";
+const mspid = "Org1MSP";
 
 let list: Icase[];
 
@@ -28,7 +28,7 @@ async function test() {
     console.log("flag3");
     const contract = network.getContract("iovcases");
     console.log("flag4");
-    const args: string[] = ["Org2MSP"];
+    const args: string[] = ["Org1MSP"];
     console.log("flag5");
     const submitResult = await contract.submitTransaction("getCases", ...args);
     console.log(submitResult);
