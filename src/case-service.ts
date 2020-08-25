@@ -19,12 +19,18 @@ async function test() {
     identity: mspid,
     wallet
   };
+  console.log("flag0");
   const gateway = new Gateway();
+  console.log("flag1");
   await gateway.connect(connectionProfile, gatewayOptions);
   try {
+    console.log("flag2");
     const network = await gateway.getNetwork("myc");
+    console.log("flag3");
     const contract = network.getContract("iovcases");
+    console.log("flag4");
     const args: string[] = ["Org2MSP"];
+    console.log("flag5");
     const submitResult = await contract.submitTransaction("getCases", ...args);
     console.log(submitResult);
   } catch (error) {
