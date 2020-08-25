@@ -17,7 +17,7 @@ async function test() {
   const gatewayOptions: GatewayOptions = {
     identity: mspid,
     wallet,
-    discovery: { enabled: false, asLocalhost: false }
+    discovery: { enabled: true, asLocalhost: true }
   };
   const gateway = new Gateway();
   await gateway.connect(connectionProfile, gatewayOptions);
