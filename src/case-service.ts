@@ -75,7 +75,6 @@ async function getList(data: IcaseGetListParams) {
   }
   let sorted_list = list.filter(function (item, index, array) {
     return (
-      (item.privateFor == data.privateFor || data.privateFor == "") &&
       (item.caseId.indexOf(data.search) !== -1 ||
         item.caseName.indexOf(data.search) !== -1)
     );
