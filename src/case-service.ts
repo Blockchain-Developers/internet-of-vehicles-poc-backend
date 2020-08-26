@@ -90,7 +90,7 @@ async function getList(data: IcaseGetListParams) {
 
 //define createcase parameters interface
 interface IcreateCaseParams {
-  name: string;
+  caseName: string;
   privateFor: string;
   description: string;
 }
@@ -101,11 +101,11 @@ async function createCase(data: IcreateCaseParams) {
     data.privateFor = "";
   }
   const caseId = await saltedSha256(
-    data.name + data.description,
+    data.caseName + data.description,
     moment(),
     true
   );
-  const caseName = await Buffer.from(data.name);
+  const caseName = await Buffer.from(data.caseName);
   const description = await Buffer.from(data.description);
   await fabricService.invokeChaincode("createCase", [caseId, data.privateFor], {
     caseName,
