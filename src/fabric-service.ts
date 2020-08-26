@@ -18,7 +18,7 @@ async function invokeChaincode(
     await fs.readFileSync("./config/connectionprofile.json")
   ).toString();
   const connectionProfile = JSON.parse(connectionProfileJson);
-  const wallet = await Wallets.newFileSystemWallet("./config/wallets"); 
+  const wallet = await Wallets.newFileSystemWallet("./config/wallets");
   const gatewayOptions: GatewayOptions = {
     identity: mspid,
     wallet,
@@ -29,11 +29,15 @@ async function invokeChaincode(
   try {
     const network = await gateway.getNetwork("myc");
     const contract = network.getContract("iovcases");
-    const invokeResult = await contract
+    const invokeResult: Buffer = await contract
       .createTransaction(transaction)
       .setTransient(transient)
       .submit(...args);
-    return invokeResult.toString();
+    if (invokeResult) {
+      return invokeResult.toString();
+    } else {
+      return "[]";
+    }
   } catch (error) {
     console.error(`Failed to submit transaction: ${error}`);
     process.exit(1);
