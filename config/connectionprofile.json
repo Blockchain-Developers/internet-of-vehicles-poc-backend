@@ -29,12 +29,6 @@
   "peers": {
     "org1": {
       "url": "grpc://org1:7051"
-    },
-    "org2": {
-      "url": "grpc://org2:7051"
-    },
-    "org3": {
-      "url": "grpc://org3:7051"
     }
   }
 }
