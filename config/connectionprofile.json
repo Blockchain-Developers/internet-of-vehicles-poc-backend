@@ -22,14 +22,6 @@
     "Org1": {
       "mspid": "Org1MSP",
       "peers": ["org1"]
-    },
-    "Org2": {
-      "mspid": "Org2MSP",
-      "peers": ["org2"]
-    },
-    "Org3": {
-      "mspid": "Org3MSP",
-      "peers": ["org3"]
     }
   },
   "orderers": {
@@ -40,12 +32,6 @@
   "peers": {
     "org1": {
       "url": "grpc://org1:7051"
-    },
-    "org2": {
-      "url": "grpc://org2:7051"
-    },
-    "org3": {
-      "url": "grpc://org3:7051"
     }
   }
 }
