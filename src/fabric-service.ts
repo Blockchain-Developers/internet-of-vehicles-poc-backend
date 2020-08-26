@@ -22,7 +22,7 @@ async function invokeChaincode(
   const gatewayOptions: GatewayOptions = {
     identity: mspid,
     wallet,
-    discovery: { enabled: true, asLocalhost: false },
+    discovery: { enabled: false, asLocalhost: false },
   };
   const gateway = new Gateway();
   try {
@@ -33,11 +33,7 @@ async function invokeChaincode(
       .createTransaction(transaction)
       .setTransient(transient)
       .submit(...args);
-    if (!(invokeResult === undefined)) {
-      return invokeResult.toString();
-    } else {
-      return "[]";
-    }
+    return Buffer.from(invokeResult).toString();
   } catch (error) {
     console.error(`Failed to submit transaction: ${error}`);
     process.exit(1);

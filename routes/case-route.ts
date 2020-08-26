@@ -18,7 +18,7 @@ router.get("/", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
     privateFor: data.privateFor,
     search: data.search,
     orgList: Case.orgList.slice(1, Case.orgList.length),
-    mspid: fabricService.mspid
+    mspid: fabricService.mspid,
   });
 });
 
