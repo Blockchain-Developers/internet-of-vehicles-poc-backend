@@ -25,7 +25,7 @@ function checkList(candidate: string) {
 //get privateFor function
 function getPrivateFor(caseId: string) {
   for (let i = 0; i < list.length; i++) {
-    if (list[i].id == caseId) {
+    if (list[i].caseId == caseId) {
       return list[i].privateFor;
     }
   }
@@ -65,7 +65,6 @@ async function getList(data: IcaseGetListParams) {
           )
         )
       );
-      console.log(JSON.stringify(list))
     }
   } else {
     list = JSON.parse(

@@ -35,12 +35,12 @@ body(style="font-family: 'Advent Pro', sans-serif;")
                   tr
                     td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;') Case ID
                     td(style='padding-top: 0px;padding-bottom: 0px;')
-                      a(href='/file/list/?caseId='+val.id target='_blank')
-                        span(style='text-decoration: underline;') #{val.id}
+                      a(href='/file/list/?caseId='+val.caseId target='_blank')
+                        span(style='text-decoration: underline;') #{val.caseId}
                         br
                   tr
                     td(style='padding-top: 0px;padding-bottom: 12px;padding-right: 0px;') Case Name
-                    td(style='padding-top: 0px;padding-bottom: 0px;') #{val.name}
+                    td(style='padding-top: 0px;padding-bottom: 0px;') #{val.caseName}
                       br
 
 script(src='/assets/js/jquery.min.js')
