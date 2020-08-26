@@ -7,7 +7,7 @@ import {
   TransientMap,
 } from "fabric-network";
 
-const mspid = "Org3MSP";
+const mspid = "Org1MSP";
 
 async function invokeChaincode(
   transaction: string,
