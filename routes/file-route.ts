@@ -17,13 +17,12 @@ router.get("/list", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
 
 router.post("/new", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   const filecontent: string = ctx.request.body;
-  File.newFile(filecontent);
+  File.newFile(ctx.query, filecontent);
   ctx.status = 200;
 });
 
 router.get("/delete", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
-  const fileid: string = ctx.query.fileid;
-  await File.deleteFile(fileid);
+  await File.deleteFile(ctx.query);
   ctx.redirect("back");
 });
 

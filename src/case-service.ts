@@ -1,41 +1,6 @@
 const saltedSha256 = require("salted-sha256");
 const moment = require("moment");
-import * as fs from "fs";
-import { Wallets, Gateway, GatewayOptions } from "fabric-network";
-
-const mspid = "Org3MSP";
-
-let list: Icase[];
-
-async function test() {
-  const connectionProfileJson = (
-    await fs.readFileSync("./config/connectionprofile.json")
-  ).toString();
-  const connectionProfile = JSON.parse(connectionProfileJson);
-  const wallet = await Wallets.newFileSystemWallet("./config/wallets");
-  const identity = await wallet.get(mspid);
-  console.log(identity);
-  const gatewayOptions: GatewayOptions = {
-    identity: mspid,
-    wallet,
-    discovery: { enabled: true, asLocalhost: false },
-  };
-  const gateway = new Gateway();
-  await gateway.connect(connectionProfile, gatewayOptions);
-  try {
-    const network = await gateway.getNetwork("myc");
-    const contract = network.getContract("iovcases");
-    const args: string[] = ["Org3MSP"];
-    const submitResult = await contract.submitTransaction("getCases", ...args);
-    console.log(submitResult);
-  } catch (error) {
-    console.error(`Failed to submit transaction: ${error}`);
-    process.exit(1);
-  } finally {
-    gateway.disconnect();
-  }
-}
-test();
+import fabricService from "./fabric-service";
 
 //define orgs
 const orgList: string[] = ["", "Org1MSP", "Org2MSP", "Org3MSP"];
@@ -45,6 +10,7 @@ interface Icase {
   name: string;
   privateFor: string;
 }
+let list: Icase[];
 
 //checklist function
 function checkList(candidate: string) {
@@ -54,6 +20,16 @@ function checkList(candidate: string) {
     }
   }
   return false;
+}
+
+//get privateFor function
+function getPrivateFor(caseid: string) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].id == caseid) {
+      return list[i].privateFor;
+    }
+  }
+  return "";
 }
 
 //define getlist parameters interface
@@ -69,12 +45,33 @@ interface IcaseGetListResponse {
 }
 
 //getlist function
-function getList(data: IcaseGetListParams) {
+async function getList(data: IcaseGetListParams) {
   if (!checkList(data.privateFor)) {
     data.privateFor = "";
   }
   if (!data.search) {
     data.search = "";
+  }
+  if (data.privateFor == "") {
+    list = [];
+    for (var i = 0; i < orgList.length; i++) {
+      list = <Icase[]>(
+        Object.assign(
+          list,
+          JSON.parse(
+            (
+              await fabricService.invokeChaincode("getCases", [orgList[i]])
+            ).toString()
+          )
+        )
+      );
+    }
+  } else {
+    list = JSON.parse(
+      (
+        await fabricService.invokeChaincode("getCases", [data.privateFor])
+      ).toString()
+    );
   }
   let sorted_list = list.filter(function (item, index, array) {
     return (
@@ -103,8 +100,17 @@ async function createCase(data: IcreateCaseParams) {
   if (!checkList(data.privateFor)) {
     data.privateFor = "";
   }
-  const id = await saltedSha256(data.name + data.description, moment(), true);
-  console.log(id);
+  const caseid = await saltedSha256(
+    data.name + data.description,
+    moment(),
+    true
+  );
+  const caseName = await Buffer.from(data.name);
+  const description = await Buffer.from(data.description);
+  await fabricService.invokeChaincode("createCase", [caseid, data.privateFor], {
+    caseName,
+    description,
+  });
 }
 
-export default { getList, orgList, createCase, test };
+export default { orgList, getList, createCase, getPrivateFor };

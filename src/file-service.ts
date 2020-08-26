@@ -1,10 +1,12 @@
 const saltedSha256 = require("salted-sha256");
 const moment = require("moment");
-
+import fabricService from "./fabric-service";
+import caseService from "./case-service";
 //define file interface
 interface Ifile {
   id: string;
 }
+let list: Ifile[];
 
 //define getlist parameters interface
 interface IfileGetListParams {
@@ -18,11 +20,20 @@ interface IfileGetListResponse {
   file_list: Ifile[];
 }
 //getlist function
-function getList(data: IfileGetListParams) {
+async function getList(data: IfileGetListParams) {
   /*query chaincode get list*/
   if (!data.search) {
     data.search = "";
   }
+  const privateFor = await caseService.getPrivateFor(data.caseid);
+  list = JSON.parse(
+    (
+      await fabricService.invokeChaincode("getFileList", [
+        data.caseid,
+        privateFor,
+      ])
+    ).toString()
+  );
   let sorted_list = list.filter(function (item, index, array) {
     return item.id.indexOf(data.search) !== -1;
   });
@@ -34,17 +45,34 @@ function getList(data: IfileGetListParams) {
   };
 }
 
+//define newfile parameters interface
+interface IfileNewFileParams {
+  caseid: string;
+}
 //newfile function
-async function newFile(fileDataUrl: string) {
-  const id = await saltedSha256(fileDataUrl, moment(), true);
-  console.log(id);
+async function newFile(data: IfileNewFileParams, fileDataUrl: string) {
+  const fileid = await saltedSha256(fileDataUrl, moment(), true);
+  const privateFor = await caseService.getPrivateFor(data.caseid);
+  await fabricService.invokeChaincode("uploadFile", [
+    data.caseid,
+    fileid,
+    privateFor,
+  ]);
 }
 
+//define deletefile parameters interface
+interface IfileDeleteFileParams {
+  caseid: string;
+  fileid: string;
+}
 //delete file function
-async function deleteFile(fileid: string) {
-  console.log(fileid);
+async function deleteFile(data: IfileDeleteFileParams) {
+  const privateFor = await caseService.getPrivateFor(data.caseid);
+  await fabricService.invokeChaincode("deleteFile", [
+    data.caseid,
+    data.fileid,
+    privateFor,
+  ]);
 }
 
 export default { getList, newFile, deleteFile };
-
-let list: Ifile[];
