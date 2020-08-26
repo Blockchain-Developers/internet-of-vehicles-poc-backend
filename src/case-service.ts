@@ -54,7 +54,7 @@ async function getList(data: IcaseGetListParams) {
   }
   if (data.privateFor == "") {
     list = [];
-    for (var i = 0; i < orgList.length; i++) {
+    for (var i = 1; i < orgList.length; i++) {
       list = <Icase[]>(
         Object.assign(
           list,
