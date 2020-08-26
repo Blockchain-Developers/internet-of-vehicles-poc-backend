@@ -10,7 +10,7 @@ router.get("/list", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   const data = await File.getList(ctx.query);
   await ctx.render("file-management", {
     file_list: data.file_list,
-    caseid: data.caseid,
+    caseId: data.caseId,
     search: data.search,
   });
 });

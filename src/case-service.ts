@@ -6,8 +6,8 @@ import fabricService from "./fabric-service";
 const orgList: string[] = ["", "Org1MSP", "Org2MSP", "Org3MSP"];
 //defind case interface
 interface Icase {
-  id: string;
-  name: string;
+  caseId: string;
+  caseName: string;
   privateFor: string;
 }
 let list: Icase[];
@@ -23,9 +23,9 @@ function checkList(candidate: string) {
 }
 
 //get privateFor function
-function getPrivateFor(caseid: string) {
+function getPrivateFor(caseId: string) {
   for (let i = 0; i < list.length; i++) {
-    if (list[i].id == caseid) {
+    if (list[i].id == caseId) {
       return list[i].privateFor;
     }
   }
@@ -65,6 +65,7 @@ async function getList(data: IcaseGetListParams) {
           )
         )
       );
+      console.log(JSON.stringify(list))
     }
   } else {
     list = JSON.parse(
@@ -76,8 +77,8 @@ async function getList(data: IcaseGetListParams) {
   let sorted_list = list.filter(function (item, index, array) {
     return (
       (item.privateFor == data.privateFor || data.privateFor == "") &&
-      (item.id.indexOf(data.search) !== -1 ||
-        item.name.indexOf(data.search) !== -1)
+      (item.caseId.indexOf(data.search) !== -1 ||
+        item.caseName.indexOf(data.search) !== -1)
     );
   });
 
@@ -100,14 +101,14 @@ async function createCase(data: IcreateCaseParams) {
   if (!checkList(data.privateFor)) {
     data.privateFor = "";
   }
-  const caseid = await saltedSha256(
+  const caseId = await saltedSha256(
     data.name + data.description,
     moment(),
     true
   );
   const caseName = await Buffer.from(data.name);
   const description = await Buffer.from(data.description);
-  await fabricService.invokeChaincode("createCase", [caseid, data.privateFor], {
+  await fabricService.invokeChaincode("createCase", [caseId, data.privateFor], {
     caseName,
     description,
   });

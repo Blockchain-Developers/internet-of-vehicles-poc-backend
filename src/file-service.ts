@@ -4,18 +4,18 @@ import fabricService from "./fabric-service";
 import caseService from "./case-service";
 //define file interface
 interface Ifile {
-  id: string;
+  fileId: string;
 }
 let list: Ifile[];
 
 //define getlist parameters interface
 interface IfileGetListParams {
-  caseid: string;
+  caseId: string;
   search: string;
 }
 //defind getlist response interface
 interface IfileGetListResponse {
-  caseid: string;
+  caseId: string;
   search: string;
   file_list: Ifile[];
 }
@@ -25,21 +25,21 @@ async function getList(data: IfileGetListParams) {
   if (!data.search) {
     data.search = "";
   }
-  const privateFor = await caseService.getPrivateFor(data.caseid);
+  const privateFor = await caseService.getPrivateFor(data.caseId);
   list = JSON.parse(
     (
       await fabricService.invokeChaincode("getFileList", [
-        data.caseid,
+        data.caseId,
         privateFor,
       ])
     ).toString()
   );
   let sorted_list = list.filter(function (item, index, array) {
-    return item.id.indexOf(data.search) !== -1;
+    return item.fileId.indexOf(data.search) !== -1;
   });
 
   return <IfileGetListResponse>{
-    caseid: data.caseid,
+    caseId: data.caseId,
     search: data.search,
     file_list: sorted_list,
   };
@@ -47,30 +47,30 @@ async function getList(data: IfileGetListParams) {
 
 //define newfile parameters interface
 interface IfileNewFileParams {
-  caseid: string;
+  caseId: string;
 }
 //newfile function
 async function newFile(data: IfileNewFileParams, fileDataUrl: string) {
-  const fileid = await saltedSha256(fileDataUrl, moment(), true);
-  const privateFor = await caseService.getPrivateFor(data.caseid);
+  const fileId = await saltedSha256(fileDataUrl, moment(), true);
+  const privateFor = await caseService.getPrivateFor(data.caseId);
   await fabricService.invokeChaincode("uploadFile", [
-    data.caseid,
-    fileid,
+    data.caseId,
+    fileId,
     privateFor,
   ]);
 }
 
 //define deletefile parameters interface
 interface IfileDeleteFileParams {
-  caseid: string;
-  fileid: string;
+  caseId: string;
+  fileId: string;
 }
 //delete file function
 async function deleteFile(data: IfileDeleteFileParams) {
-  const privateFor = await caseService.getPrivateFor(data.caseid);
+  const privateFor = await caseService.getPrivateFor(data.caseId);
   await fabricService.invokeChaincode("deleteFile", [
-    data.caseid,
-    data.fileid,
+    data.caseId,
+    data.fileId,
     privateFor,
   ]);
 }
