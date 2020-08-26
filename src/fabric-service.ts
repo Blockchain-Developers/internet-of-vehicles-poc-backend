@@ -33,7 +33,7 @@ async function invokeChaincode(
       .createTransaction(transaction)
       .setTransient(transient)
       .submit(...args);
-    return Buffer.from(invokeResult).toString();
+    return await (await Buffer.from(invokeResult)).toString();
   } catch (error) {
     console.error(`Failed to submit transaction: ${error}`);
     process.exit(1);
