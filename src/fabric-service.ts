@@ -25,15 +25,15 @@ async function invokeChaincode(
     discovery: { enabled: true, asLocalhost: false },
   };
   const gateway = new Gateway();
-  await gateway.connect(connectionProfile, gatewayOptions);
   try {
+    await gateway.connect(connectionProfile, gatewayOptions);
     const network = await gateway.getNetwork("myc");
     const contract = network.getContract("iovcases");
     const invokeResult: Buffer = await contract
       .createTransaction(transaction)
       .setTransient(transient)
       .submit(...args);
-    if (invokeResult) {
+    if (!(invokeResult === undefined)) {
       return invokeResult.toString();
     } else {
       return "[]";
@@ -46,4 +46,4 @@ async function invokeChaincode(
   }
 }
 
-export default { invokeChaincode };
+export default { invokeChaincode, mspid };

@@ -1,16 +1,15 @@
 import Koa from "koa";
 import Router from "koa-router";
 import Case from "../src/case-service";
-
+import fabricService from "../src/fabric-service";
 const router = new Router();
 
 router.prefix("/case");
 
-router.use("/",async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
+router.use("/", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   //console.log("test");
-  await next()
+  await next();
 });
-
 
 router.get("/", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   let data = await Case.getList(ctx.query);
@@ -19,6 +18,7 @@ router.get("/", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
     privateFor: data.privateFor,
     search: data.search,
     orgList: Case.orgList.slice(1, Case.orgList.length),
+    mspid: fabricService.mspid
   });
 });
 
@@ -32,7 +32,7 @@ router.post(
   "/create",
   async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
     Case.createCase(ctx.request.body);
-    ctx.redirect('/case')
+    ctx.redirect("/case");
   }
 );
 export default router;

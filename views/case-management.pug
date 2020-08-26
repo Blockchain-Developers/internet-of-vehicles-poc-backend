@@ -20,10 +20,11 @@ body(style="font-family: 'Advent Pro', sans-serif;")
               input.form-control(name='search' type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter (Partial) Case ID or Case Name' value=search)
             button.btn.btn-light.border.rounded-0(type='submit' style='width: 100%;background-color: #efefef;margin-bottom:20px') Search Case
           each val, index in orgList
-            if(privateFor==val)
-              a.btn.btn-light.border.rounded-0(href='/case?privateFor='+val+'&search='+search style='width: 100%;background-color: #6633ff7b;color: #ffffff;') #{val}
-            else
-              a.btn.btn-light.border.rounded-0(href='/case?privateFor='+val+'&search='+search style='width: 100%;background-color: #ffffff;') #{val}
+            if(val!=mspid)
+              if(privateFor==val)
+                a.btn.btn-light.border.rounded-0(href='/case?privateFor='+val+'&search='+search style='width: 100%;background-color: #6633ff7b;color: #ffffff;') #{val}
+              else
+                a.btn.btn-light.border.rounded-0(href='/case?privateFor='+val+'&search='+search style='width: 100%;background-color: #ffffff;') #{val}
           a.btn.btn-light.border.rounded-0(href='/case?privateFor='+'&search=' style='width: 100%;background-color: #efefef;margin-top:20px') Clear Filters
           label(style='margin-top: 20px;') Actions
           a.btn.btn-light.border.rounded-0(href='/case/create' style='width: 100%;background-color: #efefef;') Create Case
