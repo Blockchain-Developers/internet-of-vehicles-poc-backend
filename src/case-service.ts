@@ -10,7 +10,6 @@ interface Icase {
   caseName: string;
   privateFor: string;
 }
-let list: Icase[];
 
 //checklist function
 function checkList(candidate: string) {
@@ -23,10 +22,23 @@ function checkList(candidate: string) {
 }
 
 //get privateFor function
-function getPrivateFor(caseId: string) {
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].caseId == caseId) {
-      return list[i].privateFor;
+async function getPrivateFor(caseId: string) {
+  let caseList: Icase[] = [];
+  for (var i = 1; i < orgList.length; i++) {
+    caseList = <Icase[]>(
+      Object.assign(
+        caseList,
+        JSON.parse(
+          (
+            await fabricService.invokeChaincode("getCases", [orgList[i]])
+          ).toString()
+        )
+      )
+    );
+  }
+  for (let i = 0; i < caseList.length; i++) {
+    if (caseList[i].caseId == caseId) {
+      return caseList[i].privateFor;
     }
   }
   return "";
@@ -46,6 +58,7 @@ interface IcaseGetListResponse {
 
 //getlist function
 async function getList(data: IcaseGetListParams) {
+  let caseList: Icase[];
   if (!checkList(data.privateFor)) {
     data.privateFor = "";
   }
@@ -53,11 +66,11 @@ async function getList(data: IcaseGetListParams) {
     data.search = "";
   }
   if (data.privateFor == "") {
-    list = [];
+    caseList = [];
     for (var i = 1; i < orgList.length; i++) {
-      list = <Icase[]>(
+      caseList = <Icase[]>(
         Object.assign(
-          list,
+          caseList,
           JSON.parse(
             (
               await fabricService.invokeChaincode("getCases", [orgList[i]])
@@ -67,16 +80,16 @@ async function getList(data: IcaseGetListParams) {
       );
     }
   } else {
-    list = JSON.parse(
+    caseList = JSON.parse(
       (
         await fabricService.invokeChaincode("getCases", [data.privateFor])
       ).toString()
     );
   }
-  let sorted_list = list.filter(function (item, index, array) {
+  let sorted_list = caseList.filter(function (item, index, array) {
     return (
-      (item.caseId.indexOf(data.search) !== -1 ||
-        item.caseName.indexOf(data.search) !== -1)
+      item.caseId.indexOf(data.search) !== -1 ||
+      item.caseName.indexOf(data.search) !== -1
     );
   });
 

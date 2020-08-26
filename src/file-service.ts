@@ -6,7 +6,6 @@ import caseService from "./case-service";
 interface Ifile {
   fileId: string;
 }
-let list: Ifile[];
 
 //define getlist parameters interface
 interface IfileGetListParams {
@@ -21,12 +20,12 @@ interface IfileGetListResponse {
 }
 //getlist function
 async function getList(data: IfileGetListParams) {
-  /*query chaincode get list*/
+  /*query chaincode get fileList*/
   if (!data.search) {
     data.search = "";
   }
   const privateFor = await caseService.getPrivateFor(data.caseId);
-  list = JSON.parse(
+  let fileList: Ifile[] = JSON.parse(
     (
       await fabricService.invokeChaincode("getFileList", [
         data.caseId,
@@ -34,7 +33,7 @@ async function getList(data: IfileGetListParams) {
       ])
     ).toString()
   );
-  let sorted_list = list.filter(function (item, index, array) {
+  let sorted_list = fileList.filter(function (item, index, array) {
     return item.fileId.indexOf(data.search) !== -1;
   });
 
