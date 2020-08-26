@@ -18,7 +18,7 @@ async function invokeChaincode(
     await fs.readFileSync("./config/connectionprofile.json")
   ).toString();
   const connectionProfile = JSON.parse(connectionProfileJson);
-  const wallet = await Wallets.newFileSystemWallet("./config/wallets");
+  const wallet = await Wallets.newFileSystemWallet("./config/wallets"); 
   const gatewayOptions: GatewayOptions = {
     identity: mspid,
     wallet,

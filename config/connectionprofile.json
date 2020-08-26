@@ -1,6 +1,17 @@
 {
   "name": "Network",
   "version": "1.1",
+  "client": {
+    "organization": "Org1",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": "3000",
+          "committer": "3000"
+        }
+      }
+    }
+  },
   "channels": {
     "myc": {
       "orderers": ["orderer"],
