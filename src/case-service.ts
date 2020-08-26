@@ -31,7 +31,7 @@ async function getPrivateFor(caseId: string) {
         JSON.parse(
           (
             await fabricService.invokeChaincode("getCases", [orgList[i]])
-          ).toString()
+          )
         )
       )
     );
@@ -74,7 +74,7 @@ async function getList(data: IcaseGetListParams) {
           JSON.parse(
             (
               await fabricService.invokeChaincode("getCases", [orgList[i]])
-            ).toString()
+            )
           )
         )
       );
@@ -83,7 +83,7 @@ async function getList(data: IcaseGetListParams) {
     caseList = JSON.parse(
       (
         await fabricService.invokeChaincode("getCases", [data.privateFor])
-      ).toString()
+      )
     );
   }
   let sorted_list = caseList.filter(function (item, index, array) {

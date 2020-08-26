@@ -31,7 +31,7 @@ async function getList(data: IfileGetListParams) {
         data.caseId,
         privateFor,
       ])
-    ).toString()
+    )
   );
   let sorted_list = fileList.filter(function (item, index, array) {
     return item.fileId.indexOf(data.search) !== -1;
