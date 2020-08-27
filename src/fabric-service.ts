@@ -18,9 +18,7 @@ async function invokeChaincode(
   args: string[],
   transient: TransientMap = {}
 ) {
-  const connectionProfileJson = (
-    await fs.readFileSync("./config/connectionprofile.json")
-  ).toString();
+  const connectionProfileJson = fs.readFileSync(`./config/connectionprofile-${mspid}.json`).toString();
   const connectionProfile = JSON.parse(connectionProfileJson);
   const wallet = await Wallets.newFileSystemWallet("./config/wallets");
   const gatewayOptions: GatewayOptions = {
@@ -39,7 +37,7 @@ async function invokeChaincode(
       .submit(...args);
     var result = "[]";
     if (invokeResult) {
-      result = await invokeResult.toString();
+      result = invokeResult.toString();
     }
     return <invokeChaincodeResponse>{ invokeResult: result };
   } catch (error) {

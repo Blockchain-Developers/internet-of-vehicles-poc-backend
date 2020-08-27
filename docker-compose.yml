@@ -6,12 +6,39 @@ networks:
             name: iov-poc-ingress
 
 services:
-    web:
-        container_name: web
+    web1:
+        container_name: web1
         image: node:lts-alpine3.12
         working_dir: /app
+        restart: always
+        environment:
+           - sdkMspId=Org1MSP
         volumes:
            - ./:/app
         command: node ./dist/bin/server.js
         ports:
-            - "80:3000" 
+            - "80:3000"
+    web2:
+        container_name: web2
+        image: node:lts-alpine3.12
+        working_dir: /app
+        restart: always
+        environment:
+           - sdkMspId=Org2MSP
+        volumes:
+           - ./:/app
+        command: node ./dist/bin/server.js
+        ports:
+            - "90:3000"
+    web3:
+        container_name: web2
+        image: node:lts-alpine3.12
+        working_dir: /app
+        restart: always
+        environment:
+           - sdkMspId=Org3MSP
+        volumes:
+           - ./:/app
+        command: node ./dist/bin/server.js
+        ports:
+            - "100:3000"

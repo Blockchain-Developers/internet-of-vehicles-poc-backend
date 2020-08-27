@@ -58,7 +58,7 @@ interface IfileNewFileParams {
 async function newFile(data: IfileNewFileParams, fileDataUrl: string) {
   const fileId = await saltedSha256(fileDataUrl, moment(), true);
   const privateFor = await caseService.getPrivateFor(data.caseId);
-  const fileBase64 = await Buffer.from(fileDataUrl);
+  const fileBase64 = Buffer.from(fileDataUrl);
   await fabricService.invokeChaincode(
     "uploadFile",
     [data.caseId, fileId, privateFor],
