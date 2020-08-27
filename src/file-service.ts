@@ -75,10 +75,28 @@ interface IfileDeleteFileParams {
 async function deleteFile(data: IfileDeleteFileParams) {
   const privateFor = await caseService.getPrivateFor(data.caseId);
   await fabricService.invokeChaincode("deleteFile", [
-    data.caseId,
     data.fileId,
     privateFor,
   ]);
+}
+
+//define viewfile parameters interface
+interface IfileViewFileParams {
+  caseId: string;
+  fileId: string;
+}
+//delete file function
+async function viewFile(data: IfileViewFileParams) {
+  const privateFor = await caseService.getPrivateFor(data.caseId);
+  let tmpResult = await fabricService.invokeChaincode("getFile", [
+    data.fileId,
+    privateFor,
+  ]);
+  if (!!tmpResult) {
+    return <string>tmpResult.invokeResult;
+  } else {
+    return null;
+  }
 }
 
 export default { getList, newFile, deleteFile };
