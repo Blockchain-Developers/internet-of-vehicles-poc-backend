@@ -35,7 +35,7 @@ body(style="font-family: 'Advent Pro', sans-serif;")
                   tr
                     td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;min-width:60px') File ID
                     td(style='padding-top: 0px;padding-bottom: 0px;')
-                      a(href="javascript:void(0)" onclick="viewbtn(\""+val+"\")" target='_blank') #{val}
+                      a(href="javascript:void(0)" onclick="viewbtn(\""+val+"\")") #{val}
                         br
                     td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
                       a.text-danger(href="javascript:void(0)" style="min-width:96px;" onclick="deletebtn(\""+val+"\")") Delete File
@@ -55,7 +55,7 @@ body(style="font-family: 'Advent Pro', sans-serif;")
             if(!response.ok) {
               alert('File Upload Failed')
             } else {
-              setTimeout(function(){ location.reload(true)}, 500);
+              setTimeout(function(){ location.reload(true)}, 3000);
             }
           })
         }
@@ -75,7 +75,7 @@ body(style="font-family: 'Advent Pro', sans-serif;")
         if(!response.ok) {
           alert('File Download Failed')
         } else {
-          window.location.href = response.body;
+          console.log(response.text())
         }
       })
     }

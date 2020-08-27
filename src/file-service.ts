@@ -93,7 +93,8 @@ async function viewFile(data: IfileViewFileParams) {
     privateFor,
   ]);
   if (!!tmpResult) {
-    return <string>tmpResult.invokeResult;
+    let tmpObj = await JSON.parse(tmpResult.invokeResult);
+    return <string>tmpObj.fileBase64;
   } else {
     return null;
   }
