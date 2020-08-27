@@ -38,7 +38,7 @@ async function getPrivateFor(caseId: string) {
     const caseList = <Icase[]>await invokeGetCases(orgList[i]);
     for (let j = 0; j < caseList.length; j++) {
       if (caseList[j].caseId == caseId) {
-        return orgList[j];
+        return orgList[i];
       }
     }
   }

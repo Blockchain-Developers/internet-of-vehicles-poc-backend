@@ -16,7 +16,7 @@ interface IfileGetListParams {
 interface IfileGetListResponse {
   caseId: string;
   search: string;
-  file_list: Ifile[];
+  file_list: string[];
 }
 //getlist function
 async function getList(data: IfileGetListParams) {
@@ -37,10 +37,10 @@ async function getList(data: IfileGetListParams) {
   } else {
     invokeResult = "[]";
   }
-  let fileList: Ifile[] = JSON.parse(invokeResult);
+  let fileList: string[] = JSON.parse(invokeResult);
 
   let sorted_list = fileList.filter(function (item, index, array) {
-    return item.fileId.indexOf(data.search) !== -1;
+    return item.indexOf(data.search) !== -1;
   });
 
   return <IfileGetListResponse>{
