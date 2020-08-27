@@ -66,7 +66,7 @@ body(style="font-family: 'Advent Pro', sans-serif;")
         if(!response.ok) {
           alert('File Deletion Failed')
         } else {
-          location.reload()
+          setTimeout(function(){ location.reload()}, 500);
         }
       })
     }
