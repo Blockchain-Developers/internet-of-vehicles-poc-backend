@@ -7,10 +7,10 @@ import {
   TransientMap,
 } from "fabric-network";
 
-const mspid = "Org1MSP";
+const mspid: string = process.env.sdkMspId || "Org1MSP";
 
-interface invokeChaincodeResponse{
-  invokeResult:string
+interface invokeChaincodeResponse {
+  invokeResult: string;
 }
 
 async function invokeChaincode(
@@ -39,9 +39,9 @@ async function invokeChaincode(
       .submit(...args);
     var result = "[]";
     if (invokeResult) {
-      result =  await invokeResult.toString();
+      result = await invokeResult.toString();
     }
-    return <invokeChaincodeResponse>{invokeResult:result}
+    return <invokeChaincodeResponse>{ invokeResult: result };
   } catch (error) {
     console.error(
       `Failed to submit transaction: "${transaction}" with arguments: "${args}", transient: "${transient}",  error: "${error}"`
