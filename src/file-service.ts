@@ -99,4 +99,4 @@ async function viewFile(data: IfileViewFileParams) {
   }
 }
 
-export default { getList, newFile, deleteFile };
+export default { getList, newFile, deleteFile, viewFile };

@@ -23,13 +23,13 @@ router.post("/new", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
 
 router.get("/delete", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   await File.deleteFile(ctx.query);
-  ctx.redirect(`/file?caseId=${ctx.query.caseId}`);
+  ctx.status = 200;
 });
 
 router.get("/view", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   const data = await File.viewFile(ctx.query);
   console.log(data);
-  ctx.redirect(`/file?caseId=${ctx.query.caseId}`);
+  ctx.status = 200;
 });
 
 export default router;
