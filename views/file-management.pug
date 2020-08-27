@@ -48,7 +48,7 @@ body(style="font-family: 'Advent Pro', sans-serif;")
       readAsDefault: "DataURL",
       on: {
         load: async function(e, file) {
-          fetch('/file/new?caseId='+caseId, {
+          fetch('/file/new?caseId=#{caseId}', {
             body: e.target.result,
             method: 'POST',
           }).then(response => {
@@ -62,7 +62,7 @@ body(style="font-family: 'Advent Pro', sans-serif;")
       }
     })
     function deletebtn(fileId) {
-      fetch('/file/delete?caseId='+caseId+'&fileId='+fileId).then(response => {
+      fetch('/file/delete?caseId=#{caseId}&fileId=#{fileId}').then(response => {
         if(!response.ok) {
           alert('File Deletion Failed')
         } else {

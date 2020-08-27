@@ -58,11 +58,12 @@ interface IfileNewFileParams {
 async function newFile(data: IfileNewFileParams, fileDataUrl: string) {
   const fileId = await saltedSha256(fileDataUrl, moment(), true);
   const privateFor = await caseService.getPrivateFor(data.caseId);
-  await fabricService.invokeChaincode("uploadFile", [
-    data.caseId,
-    fileId,
-    privateFor,
-  ]);
+  const fileBase64 = await Buffer.from(fileDataUrl);
+  await fabricService.invokeChaincode(
+    "uploadFile",
+    [data.caseId, fileId, privateFor],
+    { fileBase64 }
+  );
 }
 
 //define deletefile parameters interface
