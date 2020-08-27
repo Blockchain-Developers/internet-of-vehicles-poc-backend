@@ -43,7 +43,6 @@ body(style="font-family: 'Advent Pro', sans-serif;")
   script(src='/assets/js/jquery.min.js')
   script(src='/assets/bootstrap/js/bootstrap.min.js')
   script(src='/assets/js/filereader.js')
-  script(src='/assets/js/FileSaver.min.js')
   script(type='text/javascript').
     FileReaderJS.setupDrop(document.body, {
       readAsDefault: "DataURL",
@@ -82,6 +81,7 @@ body(style="font-family: 'Advent Pro', sans-serif;")
             a.href = url;
             a.download = fileId;
             a.style = 'display: none';
+            var button = document.querySelector('button');
             button.parentNode.appendChild(a);
             a.click();
             a.remove();
