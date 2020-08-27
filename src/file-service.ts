@@ -1,75 +1,103 @@
 const saltedSha256 = require("salted-sha256");
 const moment = require("moment");
-
+import fabricService from "./fabric-service";
+import caseService from "./case-service";
 //define file interface
 interface Ifile {
-  id: string;
+  fileId: string;
 }
 
 //define getlist parameters interface
 interface IfileGetListParams {
-  caseid: string;
+  caseId: string;
   search: string;
 }
 //defind getlist response interface
 interface IfileGetListResponse {
-  caseid: string;
+  caseId: string;
   search: string;
-  file_list: Ifile[];
+  file_list: string[];
 }
 //getlist function
-function getList(data: IfileGetListParams) {
-  /*query chaincode get list*/
+async function getList(data: IfileGetListParams) {
+  /*query chaincode get fileList*/
   if (!data.search) {
     data.search = "";
   }
-  let sorted_list = list.filter(function (item, index, array) {
-    return item.id.indexOf(data.search) !== -1;
+  const privateFor = await caseService.getPrivateFor(data.caseId);
+
+  let tmpResult = await fabricService.invokeChaincode("getFileList", [
+    data.caseId,
+    privateFor,
+  ]);
+
+  let invokeResult: string;
+  if (tmpResult) {
+    invokeResult = tmpResult.invokeResult;
+  } else {
+    invokeResult = "[]";
+  }
+  let fileList: string[] = JSON.parse(invokeResult);
+
+  let sorted_list = fileList.filter(function (item, index, array) {
+    return item.indexOf(data.search) !== -1;
   });
 
   return <IfileGetListResponse>{
-    caseid: data.caseid,
+    caseId: data.caseId,
     search: data.search,
     file_list: sorted_list,
   };
 }
 
+//define newfile parameters interface
+interface IfileNewFileParams {
+  caseId: string;
+}
 //newfile function
-async function newFile(fileDataUrl: string) {
-  const id = await saltedSha256(fileDataUrl, moment(), true);
-  console.log(id);
+async function newFile(data: IfileNewFileParams, fileDataUrl: string) {
+  const fileId = await saltedSha256(fileDataUrl, moment(), true);
+  const privateFor = await caseService.getPrivateFor(data.caseId);
+  const fileBase64 = await Buffer.from(fileDataUrl);
+  await fabricService.invokeChaincode(
+    "uploadFile",
+    [data.caseId, fileId, privateFor],
+    { fileBase64 }
+  );
 }
 
+//define deletefile parameters interface
+interface IfileDeleteFileParams {
+  caseId: string;
+  fileId: string;
+}
 //delete file function
-async function deleteFile(fileid: string) {
-  console.log(fileid);
+async function deleteFile(data: IfileDeleteFileParams) {
+  const privateFor = await caseService.getPrivateFor(data.caseId);
+  await fabricService.invokeChaincode("deleteFile", [
+    data.fileId,
+    privateFor,
+  ]);
 }
 
-export default { getList, newFile, deleteFile };
+//define viewfile parameters interface
+interface IfileViewFileParams {
+  caseId: string;
+  fileId: string;
+}
+//delete file function
+async function viewFile(data: IfileViewFileParams) {
+  const privateFor = await caseService.getPrivateFor(data.caseId);
+  let tmpResult = await fabricService.invokeChaincode("getFile", [
+    data.fileId,
+    privateFor,
+  ]);
+  if (!!tmpResult) {
+    let tmpObj = await JSON.parse(tmpResult.invokeResult);
+    return <string>tmpObj.fileBase64;
+  } else {
+    return null;
+  }
+}
 
-/*************************************************************************/
-/*                               DEV                                     */
-/*************************************************************************/
-let list: Ifile[] = [
-  {
-    id: "6c5fbb245a1676ea5c05ae19c57fff9da90ceba32d54d25e2d2f68c30f5f5ba6",
-  },
-  {
-    id: "42b5b323bf36aa80defc5cb0313cf4d8a3b88ad7ee2931c894465a532cce2964",
-  },
-  {
-    id: "0684e25eafa300d7f3760857903b62b4beb3b7b0945c70ccc08514f88c080abf",
-  },
-  {
-    id: "def6352acf1543eb44d12487cbbcdcb6476dd2061a5689baa140102a23b5582c",
-  },
-  {
-    id: "7c2453e005dedf806127caa20d23885d62d061e72683aa34771ca10b746c51d8",
-  },
-  {
-    id: "1b5fc0c1c95a0b76bc2ed80d6ecc79ff68d468caf885044ed40c7165dda6ed4f",
-  },
-];
-/*************************************************************************/
-/*************************************************************************/
-/*************************************************************************/
+export default { getList, newFile, deleteFile, viewFile };

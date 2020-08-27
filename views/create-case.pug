@@ -14,13 +14,14 @@ body(style="font-family: 'Advent Pro', sans-serif;")
     .container(style='max-height: 420px;width: 60%;')
       label Case Name
       .input-group
-        input.form-control(name='name' type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter Case Name')
+        input.form-control(name='caseName' type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter Case Name')
         .input-group-prepend
         .input-group-append
       label(style='margin-top: 20px;') Private for
       select.form-control.selectpicker(name='privateFor')
         each val, index in orgList
-          option(value=val) #{val}
+          if(val!=mspid)
+            option(value=val) #{val}
       br
       label(style='margin-top: 20px;') Case Description
       textarea.form-control(name='description' placeholder='Enter Description Here' rows='5')

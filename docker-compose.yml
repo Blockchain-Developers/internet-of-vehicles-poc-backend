@@ -1,0 +1,17 @@
+version: "3"
+
+networks:
+    default:
+        external:
+            name: iov-poc-ingress
+
+services:
+    web:
+        container_name: web
+        image: node:lts-alpine3.12
+        working_dir: /app
+        volumes:
+           - ./:/app
+        command: node ./dist/bin/server.js
+        ports:
+            - "80:3000" 

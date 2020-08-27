@@ -8,8 +8,8 @@ head
   link(rel='stylesheet' href='/assets/css/styles.css')
 .container(style='margin-top: 30px;')
   h1.text-center Internet of Vehicles PoC
-  h4.text-center() File Management of CaseID
-  h5.text-center(style='margin-top: -10px;') #{caseid}
+  h4.text-center() File Management of caseId
+  h5.text-center(style='margin-top: -10px;') #{caseId}
 body(style="font-family: 'Advent Pro', sans-serif;")
   div(style='margin-right: 50px;margin-left: 50px;margin-top: 10px;')
     .container(style='max-height: 420px;')
@@ -19,11 +19,11 @@ body(style="font-family: 'Advent Pro', sans-serif;")
           form(method='get')
             .input-group
               input.form-control(name='search' type='text' style='width: 100%;margin-top: -10px;padding-bottom: 2px;padding-top: 2px;' placeholder='Enter (Partial) File ID' value=search)
-              input.form-control(name='caseid' type='text' value=caseid hidden)
+              input.form-control(name='caseId' type='text' value=caseId hidden)
               .input-group-prepend
               .input-group-append
             button.btn.btn-light.border.rounded-0(type='submit' style='width: 100%;background-color: #efefef;') Search File
-          a.btn.btn-light.border.rounded-0(href='/file/list?caseid='+'&search=' style='width: 100%;background-color: #efefef;margin-top:20px') Clear Filters
+          a.btn.btn-light.border.rounded-0(href='/file/list?caseId='+'&search=' style='width: 100%;background-color: #efefef;margin-top:20px') Clear Filters
           label(style='margin-top: 20px;') Actions
           button.btn.btn-light.border.rounded-0(type='button' style='width: 100%;background-color: rgb(255,255,255);padding-top: 30%;padding-bottom: 30%;')
             | Drag File Here to Upload
@@ -35,10 +35,10 @@ body(style="font-family: 'Advent Pro', sans-serif;")
                   tr
                     td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 0px;min-width:60px') File ID
                     td(style='padding-top: 0px;padding-bottom: 0px;')
-                      a(href='#') #{val.id}
+                      a(href="javascript:void(0)" onclick="viewbtn(\""+val+"\")") #{val}
                         br
                     td(style='padding-top: 0px;padding-bottom: 0px;padding-right: 3px;width: 85px;')
-                      a.text-danger(href="javascript:void(0)" style="min-width:96px;" onclick="deletebtn(\""+val.id+"\")") Delete File
+                      a.text-danger(href="javascript:void(0)" style="min-width:96px;" onclick="deletebtn(\""+val+"\")") Delete File
 
   script(src='/assets/js/jquery.min.js')
   script(src='/assets/bootstrap/js/bootstrap.min.js')
@@ -48,25 +48,45 @@ body(style="font-family: 'Advent Pro', sans-serif;")
       readAsDefault: "DataURL",
       on: {
         load: async function(e, file) {
-          fetch('/file/new', {
+          fetch('/file/new?caseId=#{caseId}', {
             body: e.target.result,
             method: 'POST',
           }).then(response => {
             if(!response.ok) {
               alert('File Upload Failed')
             } else {
-              location.reload()
+              setTimeout(function(){ location.reload(true)}, 3000);
             }
           })
         }
       }
     })
-    function deletebtn(fileid) {
-      fetch('/file/delete?fileid='+fileid).then(response => {
+    function deletebtn(fileId) {
+      fetch('/file/delete?caseId=#{caseId}&fileId='+fileId).then(response => {
         if(!response.ok) {
           alert('File Deletion Failed')
         } else {
-          location.reload()
+          setTimeout(function(){ location.reload(true)}, 500);
+        }
+      })
+    }
+    function viewbtn(fileId) {
+      fetch('/file/view?caseId=#{caseId}&fileId='+fileId).then(response => {
+        if(!response.ok) {
+          alert('File Download Failed')
+        } else {
+          response.text()
+          .then(url=>{
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = fileId;
+            a.style = 'display: none';
+            var button = document.querySelector('button');
+            button.parentNode.appendChild(a);
+            a.click();
+            a.remove();
+            }
+          )
         }
       })
     }
