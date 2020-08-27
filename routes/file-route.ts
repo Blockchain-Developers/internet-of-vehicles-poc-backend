@@ -28,8 +28,8 @@ router.get("/delete", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
 
 router.get("/view", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   const data = await File.viewFile(ctx.query);
-  console.log(data);
   ctx.status = 200;
+  ctx.body = data;
 });
 
 export default router;
