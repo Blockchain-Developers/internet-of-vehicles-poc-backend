@@ -21,19 +21,23 @@ function checkList(candidate: string) {
   return false;
 }
 
+async function invokeGetCases(member: string) {
+  let tmpResult = await fabricService.invokeChaincode("getCases", [member]);
+  let invokeResult: string;
+  if (tmpResult) {
+    invokeResult = tmpResult.invokeResult;
+  } else {
+    invokeResult = "[]";
+  }
+  return <Icase[]>JSON.parse(invokeResult);
+}
+
 //get privateFor function
 async function getPrivateFor(caseId: string) {
   let caseList: Icase[] = [];
   for (var i = 1; i < orgList.length; i++) {
     caseList = <Icase[]>(
-      Object.assign(
-        caseList,
-        JSON.parse(
-          (
-            await fabricService.invokeChaincode("getCases", [orgList[i]])
-          )
-        )
-      )
+      Object.assign(caseList, await invokeGetCases(orgList[i]))
     );
   }
   for (let i = 0; i < caseList.length; i++) {
@@ -69,22 +73,11 @@ async function getList(data: IcaseGetListParams) {
     caseList = [];
     for (var i = 1; i < orgList.length; i++) {
       caseList = <Icase[]>(
-        Object.assign(
-          caseList,
-          JSON.parse(
-            (
-              await fabricService.invokeChaincode("getCases", [orgList[i]])
-            )
-          )
-        )
+        Object.assign(caseList, await invokeGetCases(orgList[i]))
       );
     }
   } else {
-    caseList = JSON.parse(
-      (
-        await fabricService.invokeChaincode("getCases", [data.privateFor])
-      )
-    );
+    caseList = <Icase[]>await invokeGetCases(data.privateFor);
   }
   let sorted_list = caseList.filter(function (item, index, array) {
     return (

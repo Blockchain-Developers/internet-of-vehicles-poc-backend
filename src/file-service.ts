@@ -25,14 +25,20 @@ async function getList(data: IfileGetListParams) {
     data.search = "";
   }
   const privateFor = await caseService.getPrivateFor(data.caseId);
-  let fileList: Ifile[] = JSON.parse(
-    (
-      await fabricService.invokeChaincode("getFileList", [
-        data.caseId,
-        privateFor,
-      ])
-    )
-  );
+
+  let tmpResult = await fabricService.invokeChaincode("getFileList", [
+    data.caseId,
+    privateFor,
+  ]);
+
+  let invokeResult: string;
+  if (tmpResult) {
+    invokeResult = tmpResult.invokeResult;
+  } else {
+    invokeResult = "[]";
+  }
+  let fileList: Ifile[] = JSON.parse(invokeResult);
+
   let sorted_list = fileList.filter(function (item, index, array) {
     return item.fileId.indexOf(data.search) !== -1;
   });

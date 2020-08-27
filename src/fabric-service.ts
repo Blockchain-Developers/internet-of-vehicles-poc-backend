@@ -9,6 +9,10 @@ import {
 
 const mspid = "Org1MSP";
 
+interface invokeChaincodeResponse{
+  invokeResult:string
+}
+
 async function invokeChaincode(
   transaction: string,
   args: string[],
@@ -29,14 +33,19 @@ async function invokeChaincode(
     await gateway.connect(connectionProfile, gatewayOptions);
     const network = await gateway.getNetwork("myc");
     const contract = network.getContract("iovcases");
-    const invokeResult: Buffer = await contract
+    const invokeResult = await contract
       .createTransaction(transaction)
       .setTransient(transient)
       .submit(...args);
-    return await (await Buffer.from(invokeResult)).toString();
+    var result = "[]";
+    if (invokeResult) {
+      result =  await invokeResult.toString();
+    }
+    return <invokeChaincodeResponse>{invokeResult:result}
   } catch (error) {
-    console.error(`Failed to submit transaction: ${error}`);
-    process.exit(1);
+    console.error(
+      `Failed to submit transaction: "${transaction}" with arguments: "${args}", transient: "${transient}",  error: "${error}"`
+    );
   } finally {
     gateway.disconnect();
   }

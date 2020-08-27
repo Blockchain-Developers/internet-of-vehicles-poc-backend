@@ -25,6 +25,7 @@ router.get("/", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
 router.get("/create", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   await ctx.render("create-case", {
     orgList: Case.orgList.slice(1, Case.orgList.length),
+    mspid: fabricService.mspid,
   });
 });
 
