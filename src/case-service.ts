@@ -34,17 +34,15 @@ async function invokeGetCases(member: string) {
 
 //get privateFor function
 async function getPrivateFor(caseId: string) {
-  let caseList: Icase[] = [];
   for (var i = 1; i < orgList.length; i++) {
-    caseList = <Icase[]>(
-      Object.assign(caseList, await invokeGetCases(orgList[i]))
-    );
-  }
-  for (let i = 0; i < caseList.length; i++) {
-    if (caseList[i].caseId == caseId) {
-      return caseList[i].privateFor;
+    const caseList = <Icase[]>await invokeGetCases(orgList[i]);
+    for (let j = 0; j < caseList.length; j++) {
+      if (caseList[j].caseId == caseId) {
+        return orgList[j];
+      }
     }
   }
+
   return "";
 }
 
