@@ -5,6 +5,7 @@ import {
   GatewayOptions,
   Network,
   TransientMap,
+  Contract,
 } from "fabric-network";
 
 const mspid: string = process.env.sdkMspId || "Org1MSP";
@@ -12,13 +13,11 @@ const mspid: string = process.env.sdkMspId || "Org1MSP";
 interface invokeChaincodeResponse {
   invokeResult: string;
 }
-
-async function invokeChaincode(
-  transaction: string,
-  args: string[],
-  transient: TransientMap = {}
-) {
-  const connectionProfileJson = fs.readFileSync(`./config/connectionprofile-${mspid}.json`).toString();
+let contract: Contract;
+async function initGateway() {
+  const connectionProfileJson = fs
+    .readFileSync(`./config/connectionprofile-${mspid}.json`)
+    .toString();
   const connectionProfile = JSON.parse(connectionProfileJson);
   const wallet = await Wallets.newFileSystemWallet("./config/wallets");
   const gatewayOptions: GatewayOptions = {
@@ -27,10 +26,16 @@ async function invokeChaincode(
     discovery: { enabled: false, asLocalhost: false },
   };
   const gateway = new Gateway();
+  await gateway.connect(connectionProfile, gatewayOptions);
+  const network = await gateway.getNetwork("myc");
+  contract = network.getContract("iovcases");
+}
+async function invokeChaincode(
+  transaction: string,
+  args: string[],
+  transient: TransientMap = {}
+) {
   try {
-    await gateway.connect(connectionProfile, gatewayOptions);
-    const network = await gateway.getNetwork("myc");
-    const contract = network.getContract("iovcases");
     const invokeResult = await contract
       .createTransaction(transaction)
       .setTransient(transient)
@@ -44,8 +49,6 @@ async function invokeChaincode(
     console.error(
       `Failed to submit transaction: "${transaction}" with arguments: "${args}", transient: "${transient}",  error: "${error}"`
     );
-  } finally {
-    gateway.disconnect();
   }
 }
 
