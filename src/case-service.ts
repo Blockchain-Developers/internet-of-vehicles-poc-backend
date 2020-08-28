@@ -11,6 +11,10 @@ interface Icase {
   privateFor: string;
 }
 
+async function test() {
+  await fabricService.invokeChaincode("init", []);
+}
+
 //checklist function
 function checkList(candidate: string) {
   for (let i = 0; i < orgList.length; i++) {
@@ -116,4 +120,4 @@ async function createCase(data: IcreateCaseParams) {
   });
 }
 
-export default { orgList, getList, createCase, getPrivateFor };
+export default { orgList, getList, createCase, getPrivateFor, test };

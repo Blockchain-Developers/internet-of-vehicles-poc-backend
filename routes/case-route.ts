@@ -11,6 +11,11 @@ router.use("/", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   await next();
 });
 
+router.get("/test", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
+  await Case.test();
+  ctx.status = 200;
+});
+
 router.get("/", async (ctx: Koa.ParameterizedContext, next: Koa.Next) => {
   let data = await Case.getList(ctx.query);
   await ctx.render("case-management", {
