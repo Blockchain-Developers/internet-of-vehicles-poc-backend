@@ -10,9 +10,7 @@ import {
 
 const mspid: string = process.env.sdkMspId || "Org1MSP";
 
-interface invokeChaincodeResponse {
-  invokeResult: string;
-}
+
 let contract: Contract;
 async function initGateway() {
   const connectionProfileJson = fs
@@ -29,6 +27,12 @@ async function initGateway() {
   await gateway.connect(connectionProfile, gatewayOptions);
   const network = await gateway.getNetwork("myc");
   contract = network.getContract("iovcases");
+}
+initGateway();
+
+
+interface invokeChaincodeResponse {
+  invokeResult: string;
 }
 async function invokeChaincode(
   transaction: string,
