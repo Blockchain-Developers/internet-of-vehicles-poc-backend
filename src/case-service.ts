@@ -84,7 +84,7 @@ async function getList(data: IcaseGetListParams) {
       caseList = [...caseList, ...orgCaseLists[j]];
     }
 
-    Object.assign(caseList, await invokeGetCases(orgList[i]))
+    //Object.assign(caseList, await invokeGetCases(orgList[i]))
   } else {
     caseList = <Icase[]>await invokeGetCases(data.privateFor);
   }

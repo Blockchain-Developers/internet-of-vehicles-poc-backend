@@ -43,7 +43,6 @@ async function invokeChaincode(
     const invokeResult = await contract
       .createTransaction(transaction)
       .setTransient(transient)
-      .setEndorsingOrganizations(...orgs)
       .submit(...args);
     var result = "[]";
     if (invokeResult) {

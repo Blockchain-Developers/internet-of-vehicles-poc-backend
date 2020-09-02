@@ -31,7 +31,7 @@ services:
         ports:
             - "90:3000"
     web3:
-        container_name: web2
+        container_name: web3
         image: node:lts-alpine3.12
         working_dir: /app
         restart: always
