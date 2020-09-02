@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node bin/server.ts",
+    "start": "node dist/bin/server.ts",
     "dev": "./node_modules/.bin/nodemon -e ts,tsx --exec ts-node bin/server.ts",
-    "prd": "pm2 start bin/server",
     "test": "echo \"Error: no test specified\" && exit 0",
     "build": "tsc"
   },

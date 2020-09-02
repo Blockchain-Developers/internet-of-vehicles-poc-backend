@@ -9,7 +9,7 @@ import {
 } from "fabric-network";
 
 const mspid: string = process.env.sdkMspId || "Org1MSP";
-
+const orgs: string[] = [mspid];
 
 let contract: Contract;
 async function initGateway() {
@@ -43,6 +43,7 @@ async function invokeChaincode(
     const invokeResult = await contract
       .createTransaction(transaction)
       .setTransient(transient)
+      .setEndorsingOrganizations(...orgs)
       .submit(...args);
     var result = "[]";
     if (invokeResult) {

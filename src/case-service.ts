@@ -1,6 +1,8 @@
 const saltedSha256 = require("salted-sha256");
 const moment = require("moment");
 import fabricService from "./fabric-service";
+import { promises } from "fs";
+import { listenerCount } from "koa";
 
 //define orgs
 const orgList: string[] = ["", "Org1MSP", "Org2MSP", "Org3MSP"];
@@ -73,11 +75,16 @@ async function getList(data: IcaseGetListParams) {
   }
   if (data.privateFor == "") {
     caseList = [];
+    const getCases: Promise<Icase[]>[] = [];
     for (var i = 1; i < orgList.length; i++) {
-      caseList = <Icase[]>(
-        Object.assign(caseList, await invokeGetCases(orgList[i]))
-      );
+      getCases.push(invokeGetCases(orgList[i]));
     }
+    const orgCaseLists = await Promise.all(getCases);
+    for (let j = 0; j < orgCaseLists.length; j++) {
+      caseList = [...caseList, ...orgCaseLists[j]];
+    }
+
+    Object.assign(caseList, await invokeGetCases(orgList[i]))
   } else {
     caseList = <Icase[]>await invokeGetCases(data.privateFor);
   }
