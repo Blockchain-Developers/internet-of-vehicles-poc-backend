@@ -23,7 +23,7 @@ async function initGateway() {
     wallet,
     discovery: { enabled: false, asLocalhost: false },
     eventHandlerOptions: {
-      strategy: DefaultEventHandlerStrategies.NONE,
+      strategy: DefaultEventHandlerStrategies.MSPID_SCOPE_ALLFORTX,
     },
   };
   const gateway = new Gateway();
