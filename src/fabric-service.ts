@@ -3,7 +3,7 @@ import {
   Wallets,
   Gateway,
   GatewayOptions,
-  Network,
+  DefaultEventHandlerStrategies,
   TransientMap,
   Contract,
 } from "fabric-network";
@@ -22,6 +22,9 @@ async function initGateway() {
     identity: mspid,
     wallet,
     discovery: { enabled: false, asLocalhost: false },
+    eventHandlerOptions: {
+      strategy: DefaultEventHandlerStrategies.NONE,
+    },
   };
   const gateway = new Gateway();
   await gateway.connect(connectionProfile, gatewayOptions);
@@ -29,7 +32,6 @@ async function initGateway() {
   contract = network.getContract("iovcases");
 }
 initGateway();
-
 
 interface invokeChaincodeResponse {
   invokeResult: string;
