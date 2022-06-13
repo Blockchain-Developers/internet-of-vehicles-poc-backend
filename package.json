@@ -34,7 +34,7 @@
     "pug": "^3.0.0",
     "salted-sha256": "^1.0.0",
     "sha256": "^0.2.0",
-    "source-map-loader": "^1.0.1",
+    "source-map-loader": "^4.0.0",
     "tsc": "^1.20150623.0"
   },
   "devDependencies": {
